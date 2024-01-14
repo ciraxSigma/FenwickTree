@@ -1,12 +1,14 @@
 #include <iostream>
-#include <array>
+#include <vector>
+#include <chrono>
 
 
-std::array<int, 9> create(std::array<int, 9> arr){
 
-    std::array<int, 9> BITarr;
+std::vector<long long int> create(std::vector<long long int> arr){
 
-    int subSum = 0;
+    std::vector<long long int> BITarr;
+
+    long long int subSum = 0;
 
     for(int i = 1; i  < arr.size() + 1; ++i){
 
@@ -16,7 +18,7 @@ std::array<int, 9> create(std::array<int, 9> arr){
 
         }
 
-        BITarr[i - 1] = subSum;
+        BITarr.push_back(subSum);
         subSum = 0;
     }
 
@@ -24,9 +26,9 @@ std::array<int, 9> create(std::array<int, 9> arr){
 
 }
 
-int calculateSum(int index, std::array<int, 9> arr){
+long long int calculateSum(int index, std::vector<long long int>& arr){
 
-    int sum = 0;
+    long long int sum = 0;
 
     while(index > 0){
 
@@ -38,7 +40,11 @@ int calculateSum(int index, std::array<int, 9> arr){
 
 }
 
-void update(int index, int value ,std::array<int, 9>& arr){
+long long int calculateSumBetween(int startIndex, int endIndex, std::vector<long long int>& BITarr){
+    return calculateSum(endIndex, BITarr) - calculateSum(startIndex - 1, BITarr);
+}
+
+void update(int index, int value ,std::vector<long long int>& arr){
 
     while(index <= arr.size()){
 
@@ -52,12 +58,43 @@ void update(int index, int value ,std::array<int, 9>& arr){
 int main()
 {
 
-    std::array<int, 9>arr = {2, 1, 7, 4, 3, 2, 7, 9, 5};
-    std::array<int, 9> BITarr = create(arr);
+    std::vector<long long int> vektor;
+
+    for(int i = 1; i <= 1000000; ++i){
+        vektor.push_back(i);
+    }
+
+    std::vector<long long int> BIT = create(vektor);
+
+    long long int sum = 0;
+
+    auto start1 = std::chrono::steady_clock::now();
 
 
-    std::cout << calculateSum(7, BITarr) - calculateSum(4, BITarr);
+    for(int i = 0; i < 856797; ++i){
+        sum += vektor[i];
+    }
 
+    auto end1 = std::chrono::steady_clock::now();
+
+    auto diff1 = end1 - start1;
+
+
+    std::cout << sum << std::endl;
+    std::cout << "Time: " << std::chrono::duration <double, std::milli> (diff1).count() << std::endl;
+    std::cout << "========" << std::endl;
+
+    auto start2 = std::chrono::steady_clock::now();
+
+    sum = calculateSum(856797, BIT);
+
+    auto end2 = std::chrono::steady_clock::now();
+
+    auto diff2 = end2 - start2;
+
+    std::cout << sum << std::endl;
+    std::cout << "Time: " << std::chrono::duration <double, std::milli> (diff2).count() << std::endl;
+    std::cout << "========" << std::endl;
 
     return 0;
 }

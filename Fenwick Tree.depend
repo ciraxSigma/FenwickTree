@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1705254173 source:/home/cira/Desktop/C++/Fenwick Tree/main.cpp
+	<iostream>
+	<vector>
+	<chrono>
+
